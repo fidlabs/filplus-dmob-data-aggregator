@@ -12,8 +12,7 @@ pub async fn process(source_db: SourceDatabase, dest_db: DestDatabase) -> Result
     Ok(())
 }
 
-// FIXME instrumentation lacks info about actual type used here
-#[tracing::instrument(skip(source_db, dest_db))]
+#[tracing::instrument(skip(source_db, dest_db), fields(view=T::NAME))]
 pub async fn process_view<T: Fetchable + Writable>(
     source_db: &SourceDatabase,
     dest_db: &DestDatabase,

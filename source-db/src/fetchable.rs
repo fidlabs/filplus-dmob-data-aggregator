@@ -6,11 +6,15 @@ use sqlx::{
 use types::{CidSharing, ProviderDistribution, ReplicaDistribution};
 
 pub trait Fetchable: Send + Sized + Unpin {
+    const NAME: &'static str;
+
     fn query(
     ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments>;
 }
 
 impl Fetchable for ProviderDistribution {
+    const NAME: &'static str = "ProviderDistribution";
+
     fn query(
     ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
         // FIXME need proper query
@@ -28,6 +32,8 @@ impl Fetchable for ProviderDistribution {
 }
 
 impl Fetchable for ReplicaDistribution {
+    const NAME: &'static str = "ReplicaDistribution";
+
     fn query(
     ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
         // FIXME need proper query
@@ -45,6 +51,8 @@ impl Fetchable for ReplicaDistribution {
 }
 
 impl Fetchable for CidSharing {
+    const NAME: &'static str = "CidSharing";
+
     fn query(
     ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
         // FIXME need proper query
