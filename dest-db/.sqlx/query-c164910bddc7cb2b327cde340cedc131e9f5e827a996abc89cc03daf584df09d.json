@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "truncate cid_sharings",
+  "query": "truncate replica_distribution",
   "describe": {
     "columns": [],
     "parameters": {
@@ -8,5 +8,5 @@
     },
     "nullable": []
   },
-  "hash": "92ce138507143ef025a0a95d0e68d32d3b74583c3657a38d2166414e4917be12"
+  "hash": "c164910bddc7cb2b327cde340cedc131e9f5e827a996abc89cc03daf584df09d"
 }
