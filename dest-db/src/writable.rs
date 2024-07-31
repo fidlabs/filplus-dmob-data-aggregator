@@ -1,8 +1,4 @@
-use sqlx::{
-    postgres::{PgArguments},
-    query::{Query},
-    Postgres,
-};
+use sqlx::{postgres::PgArguments, query::Query, Postgres};
 use types::{CidSharing, ProviderDistribution, ReplicaDistribution};
 
 pub trait Writable: Send + Sized + Unpin {

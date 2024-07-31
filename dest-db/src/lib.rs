@@ -30,18 +30,14 @@ impl DestDatabase {
 
 impl Transaction {
     pub async fn truncate<T: Writable>(mut self) -> Result<Self, sqlx::Error> {
-        T::truncate()
-            .execute(&mut *self.tx)
-            .await?;
+        T::truncate().execute(&mut *self.tx).await?;
         Ok(self)
     }
 
     pub async fn insert<T: Writable>(mut self, data: Vec<T>) -> Result<Self, sqlx::Error> {
         // perf note - optimize this with some batching
         for row in data {
-            row.insert()
-                .execute(&mut *self.tx)
-                .await?;
+            row.insert().execute(&mut *self.tx).await?;
         }
         Ok(self)
     }
