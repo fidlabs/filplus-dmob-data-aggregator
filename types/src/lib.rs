@@ -1,5 +1,3 @@
-pub use sqlx::postgres::PgPool;
-
 pub struct ProviderDistribution {
     pub client: String,
     pub provider: String,

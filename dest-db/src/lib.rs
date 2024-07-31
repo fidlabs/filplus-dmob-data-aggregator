@@ -1,13 +1,12 @@
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use types::{CidSharing, ProviderDistribution, ReplicaDistribution};
 
-
 pub struct DestDatabase {
-    pool: PgPool
+    pool: PgPool,
 }
 
 pub struct Transaction {
-    tx: sqlx::Transaction<'static, sqlx::Postgres>
+    tx: sqlx::Transaction<'static, sqlx::Postgres>,
 }
 
 impl DestDatabase {
@@ -29,6 +28,13 @@ impl DestDatabase {
 
 impl Transaction {
     // FIXME deduplicate this with generics via some Writable trait on types
+    pub async fn truncate_provider_distributions(mut self) -> Result<Self, sqlx::Error> {
+        sqlx::query!("truncate provider_distribution")
+            .execute(&mut *self.tx)
+            .await?;
+        Ok(self)
+    }
+
     pub async fn write_provider_distributions(
         mut self,
         data: Vec<ProviderDistribution>,
@@ -51,7 +57,15 @@ impl Transaction {
         }
         Ok(self)
     }
-    pub async fn write_replica_distributions (
+
+    pub async fn truncate_replica_distributions(mut self) -> Result<Self, sqlx::Error> {
+        sqlx::query!("truncate replica_distributions")
+            .execute(&mut *self.tx)
+            .await?;
+        Ok(self)
+    }
+
+    pub async fn write_replica_distributions(
         mut self,
         data: Vec<ReplicaDistribution>,
     ) -> Result<Self, sqlx::Error> {
@@ -71,10 +85,15 @@ impl Transaction {
         }
         Ok(self)
     }
-    pub async fn write_cid_sharings(
-        mut self,
-        data: Vec<CidSharing>,
-    ) -> Result<Self, sqlx::Error> {
+
+    pub async fn truncate_cid_sharings(mut self) -> Result<Self, sqlx::Error> {
+        sqlx::query!("truncate cid_sharings")
+            .execute(&mut *self.tx)
+            .await?;
+        Ok(self)
+    }
+
+    pub async fn write_cid_sharings(mut self, data: Vec<CidSharing>) -> Result<Self, sqlx::Error> {
         for row in data {
             sqlx::query!(
                 "
