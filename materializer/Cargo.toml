@@ -1,0 +1,13 @@
+[package]
+name = "materializer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+color-eyre = "0.6.3"
+dest-db = { version = "0.1.0", path = "../dest-db" }
+source-db = { version = "0.1.0", path = "../source-db" }
+tokio = { version = "1.39.2", features = ["macros", "rt"] }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+types = { version = "0.1.0", path = "../types" }

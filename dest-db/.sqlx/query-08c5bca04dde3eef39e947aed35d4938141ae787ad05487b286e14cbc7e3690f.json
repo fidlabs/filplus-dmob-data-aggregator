@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                    insert into cid_sharing (client, other_client, unique_cid_count, total_deal_size)\n                    values ($1, $2, $3, $4)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Int4",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "08c5bca04dde3eef39e947aed35d4938141ae787ad05487b286e14cbc7e3690f"
+}

@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "select 'a' as client, 1 as num_of_replicas, 1 as total_deal_size, 1 as unique_data_size",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "client",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "num_of_replicas",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "total_deal_size",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "unique_data_size",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "9cd99facecc24c05ed3be03b6e1dc02e73597a2568a971bd22431d1f5f05f012"
+}

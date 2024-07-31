@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "select 'a' as client, 'a' as provider, 1 as total_deal_size, 1 as unique_data_size",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "client",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "provider",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "total_deal_size",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "unique_data_size",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "f5fb1e2e6b9854e77c023e217c4cf95abeff0a8862a297ec538f351b041d6a82"
+}

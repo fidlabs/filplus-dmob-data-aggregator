@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                    insert into replica_distribution (client, num_of_replicas, total_deal_size, unique_data_size)\n                    values ($1, $2, $3, $4)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Int4",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "de2a0133aec5a4d77073157208aae4c698168ca3a406e4d728921a96bb2f7f77"
+}

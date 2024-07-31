@@ -1,0 +1,7 @@
+[workspace]
+resolver = "2"
+members = [
+	"dest-db",
+	"materializer",
+	"source-db", "types",
+]

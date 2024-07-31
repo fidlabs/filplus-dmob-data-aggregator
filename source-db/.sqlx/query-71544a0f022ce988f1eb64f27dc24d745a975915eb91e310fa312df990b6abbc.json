@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "select 'a' as client, 'b' as other_client, 1 as unique_cid_count, 1 as total_deal_size",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "client",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "other_client",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "unique_cid_count",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "total_deal_size",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "71544a0f022ce988f1eb64f27dc24d745a975915eb91e310fa312df990b6abbc"
+}
