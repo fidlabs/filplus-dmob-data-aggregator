@@ -1,9 +1,9 @@
 use crate::Result;
 use dest_db::{DestDatabase, Writable};
-use source_db::{Fetchable, SourceDatabase};
-use tracing::{warn, info};
-use types::{AggregatedClientDeals, CidSharing, ProviderDistribution, ReplicaDistribution};
 use futures_util::future::TryFutureExt;
+use source_db::{Fetchable, SourceDatabase};
+use tracing::{info, warn};
+use types::{AggregatedClientDeals, CidSharing, ProviderDistribution, ReplicaDistribution};
 
 #[tracing::instrument(skip(source_db, dest_db))]
 pub async fn process(source_db: SourceDatabase, dest_db: DestDatabase) -> Result<()> {
@@ -22,7 +22,7 @@ pub async fn process_view<T: Fetchable + Writable>(
     info!("Fetching");
     let fetch = || source_db.fetch::<T>();
     let data = fetch()
-        .or_else(|e| { 
+        .or_else(|e| {
             // we're reading from a read-only postgres replica. long running
             // queries can be cancelled if they're reading rows that primary db
             // wants to remove/update. for now, lets just retry. if this keeps
@@ -32,7 +32,6 @@ pub async fn process_view<T: Fetchable + Writable>(
             fetch()
         })
         .await?;
-
 
     info!("Writing {} rows", data.len());
     dest_db
