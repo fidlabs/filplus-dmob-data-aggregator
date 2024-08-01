@@ -17,7 +17,6 @@ impl Fetchable for ProviderDistribution {
 
     fn query(
     ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
-        // FIXME need proper query
         query_as!(
             Self,
             r#"
@@ -63,7 +62,6 @@ impl Fetchable for ReplicaDistribution {
 
     fn query(
     ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
-        // FIXME need proper query
         query_as!(
             Self,
             r#"
@@ -101,7 +99,6 @@ impl Fetchable for CidSharing {
 
     fn query(
     ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
-        // FIXME need proper query
         query_as!(
             Self,
             r#"
