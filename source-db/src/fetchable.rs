@@ -168,15 +168,15 @@ impl Fetchable for Providers {
             r#"
             select
                 distinct on ("providerId")
-                "providerId" as "provider!",
-                "clientId" as "first_client!"
+                'f0' || "providerId" as "provider!",
+                'f0' || "clientId" as "first_client!"
             from dc_allocation_claim
             where
                 "termStart" > 0
                 and removed = false
             order by
                 "providerId",
-                id asc
+                "termStart" asc
             "#
         )
     }

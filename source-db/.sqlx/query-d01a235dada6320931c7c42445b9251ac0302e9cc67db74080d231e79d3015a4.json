@@ -1,0 +1,26 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            select\n                distinct on (\"providerId\")\n                'f0' || \"providerId\" as \"provider!\",\n                'f0' || \"clientId\" as \"first_client!\"\n            from dc_allocation_claim\n            where\n                \"termStart\" > 0\n                and removed = false\n            order by\n                \"providerId\",\n                \"termStart\" asc\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "provider!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "first_client!",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null
+    ]
+  },
+  "hash": "d01a235dada6320931c7c42445b9251ac0302e9cc67db74080d231e79d3015a4"
+}
