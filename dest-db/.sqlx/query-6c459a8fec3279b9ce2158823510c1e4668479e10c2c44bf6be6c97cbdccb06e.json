@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                    insert into providers (provider, first_client)\n                    values ($1, $2)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "6c459a8fec3279b9ce2158823510c1e4668479e10c2c44bf6be6c97cbdccb06e"
+}

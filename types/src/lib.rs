@@ -25,3 +25,8 @@ pub struct AggregatedClientDeals {
     pub term_start_to: i32,
     pub total_deal_size: i64,
 }
+
+pub struct Providers {
+    pub provider: String,
+    pub first_client: String,
+}

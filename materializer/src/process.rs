@@ -3,10 +3,13 @@ use dest_db::{DestDatabase, Writable};
 use futures_util::future::TryFutureExt;
 use source_db::{Fetchable, SourceDatabase};
 use tracing::{info, warn};
-use types::{AggregatedClientDeals, CidSharing, ProviderDistribution, ReplicaDistribution};
+use types::{
+    AggregatedClientDeals, CidSharing, ProviderDistribution, Providers, ReplicaDistribution,
+};
 
 #[tracing::instrument(skip(source_db, dest_db))]
 pub async fn process(source_db: SourceDatabase, dest_db: DestDatabase) -> Result<()> {
+    process_view::<Providers>(&source_db, &dest_db).await?;
     process_view::<ProviderDistribution>(&source_db, &dest_db).await?;
     process_view::<ReplicaDistribution>(&source_db, &dest_db).await?;
     process_view::<CidSharing>(&source_db, &dest_db).await?;

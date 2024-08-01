@@ -3,7 +3,9 @@ use sqlx::{
     query::Map,
     query_as, Error, Postgres,
 };
-use types::{AggregatedClientDeals, CidSharing, ProviderDistribution, ReplicaDistribution};
+use types::{
+    AggregatedClientDeals, CidSharing, ProviderDistribution, Providers, ReplicaDistribution,
+};
 
 pub trait Fetchable: Send + Sized + Unpin {
     const NAME: &'static str;
@@ -151,6 +153,30 @@ impl Fetchable for AggregatedClientDeals {
                 (term_start+1) * 3600 / 30 - 1 as "term_start_to!",
                 total_deal_size::bigint as "total_deal_size!"
             from aggregates
+            "#
+        )
+    }
+}
+
+impl Fetchable for Providers {
+    const NAME: &'static str = "providers";
+
+    fn query(
+    ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
+        query_as!(
+            Self,
+            r#"
+            select
+                distinct on ("providerId")
+                "providerId" as "provider!",
+                "clientId" as "first_client!"
+            from dc_allocation_claim
+            where
+                "termStart" > 0
+                and removed = false
+            order by
+                "providerId",
+                id asc
             "#
         )
     }
