@@ -20,17 +20,20 @@ pub async fn process_view<T: Fetchable + Writable>(
     dest_db: &DestDatabase,
 ) -> Result<()> {
     info!("Fetching");
+
+    // the retry logic code below is bad, but it's temporary - as soon as DMOB
+    // team increases max_standby_*_delay on postgres we can get rid of retries
+    // completely
     let fetch = || source_db.fetch::<T>();
+    let refetch = |e| {
+        warn!(%e, "Error while fetching, retrying...");
+        fetch()
+    };
     let data = fetch()
-        .or_else(|e| {
-            // we're reading from a read-only postgres replica. long running
-            // queries can be cancelled if they're reading rows that primary db
-            // wants to remove/update. for now, lets just retry. if this keeps
-            // being a problem, increase max_standby_archive_delay and
-            // max_standby_streaming_delay in replica config
-            warn!(%e, "Error while fetching, retrying...");
-            fetch()
-        })
+        .or_else(refetch)
+        .or_else(refetch)
+        .or_else(refetch)
+        .or_else(refetch)
         .await?;
 
     info!("Writing {} rows", data.len());
