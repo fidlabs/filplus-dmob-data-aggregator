@@ -126,7 +126,6 @@ impl Fetchable for CidSharing {
     }
 }
 
-
 impl Fetchable for AggregatedClientDeals {
     const NAME: &'static str = "AggregatedClientDeals";
 
