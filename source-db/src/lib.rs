@@ -1,4 +1,7 @@
-use sqlx::postgres::{PgPool, PgPoolOptions};
+use std::time::Duration;
+
+use sqlx::ConnectOptions;
+use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
 
 mod fetchable;
 pub use fetchable::Fetchable;
@@ -9,9 +12,11 @@ pub struct SourceDatabase {
 
 impl SourceDatabase {
     pub async fn connect(db_url: &str) -> Result<Self, sqlx::Error> {
+        let options = db_url.parse::<PgConnectOptions>()?.log_slow_statements(log::LevelFilter::Warn, Duration::from_secs(5*60));
+
         let pool = PgPoolOptions::new()
             .max_connections(5)
-            .connect(db_url)
+            .connect_with(options)
             .await?;
 
         Ok(Self { pool })

@@ -20,7 +20,7 @@ pub async fn process_view<T: Fetchable + Writable>(
     info!("Fetching");
     let data = source_db.fetch::<T>().await?;
 
-    info!("Writing");
+    info!("Writing {} rows", data.len());
     dest_db
         .begin()
         .await?

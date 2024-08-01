@@ -21,11 +21,38 @@ impl Fetchable for ProviderDistribution {
         query_as!(
             Self,
             r#"
-                select
-                    'a' as "client!",
-                    'b' as "provider!",
-                    1 as "total_deal_size!",
-                    1 as "unique_data_size!"
+             WITH miner_pieces AS (
+                SELECT
+                    'f0' || "clientId"  AS client,
+                    'f0' || "providerId"  AS provider,
+                    "pieceCid",
+                    SUM("pieceSize") AS total_deal_size,
+                    MIN("pieceSize") AS piece_size
+                FROM  dc_allocation_claim
+                WHERE 
+                    removed = false AND
+                    "termStart" > 0
+                GROUP BY
+                    client,
+                    provider,
+                    "pieceCid"
+            ),
+            miners AS (
+                SELECT
+                    client,
+                    provider,
+                    SUM(total_deal_size) AS total_deal_size,
+                    SUM(piece_size)      AS unique_data_size
+                FROM   miner_pieces
+                GROUP  BY client, provider
+            )
+            SELECT
+                client as "client!",
+                provider as "provider!",
+                total_deal_size::bigint as "total_deal_size!",
+                unique_data_size::bigint as "unique_data_size!"
+            FROM   miners
+            ORDER  BY total_deal_size DESC
             "#
         )
     }
@@ -39,13 +66,32 @@ impl Fetchable for ReplicaDistribution {
         // FIXME need proper query
         query_as!(
             Self,
-            "
-                select
-                    'a' as \"client!\",
-                    1 as \"num_of_replicas!\",
-                    1 as \"total_deal_size!\",
-                    1 as \"unique_data_size!\"
-            "
+            r#"
+            WITH replicas AS (
+                SELECT
+                    'f0' || "clientId" as "clientId",
+                    "pieceCid" AS piece_cid,
+                    COUNT(DISTINCT "providerId") AS num_of_replicas,
+                    SUM("pieceSize") AS total_deal_size,
+                    MAX("pieceSize") AS piece_size
+                FROM dc_allocation_claim
+                WHERE
+                    removed = false
+                    AND "termStart" > 0
+                GROUP BY
+                    "clientId",
+                    piece_cid
+            )
+            SELECT
+                "clientId" as "client!",
+                num_of_replicas::INT as "num_of_replicas!",
+                SUM(total_deal_size)::bigint AS "total_deal_size!",
+                SUM(piece_size)::bigint AS "unique_data_size!"
+            FROM replicas
+            GROUP BY
+                "clientId",
+                num_of_replicas
+            "#
         )
     }
 }
@@ -58,13 +104,27 @@ impl Fetchable for CidSharing {
         // FIXME need proper query
         query_as!(
             Self,
-            "
-                select
-                    'a' as \"client!\",
-                    'b' as \"other_client!\",
-                    1 as \"unique_cid_count!\",
-                    1 as \"total_deal_size!\"
-            "
+            r#"
+            with cids as (
+                    select distinct
+                        "clientId",
+                        "pieceCid"
+                    from dc_allocation_claim
+                    where removed = false
+            )
+            SELECT 
+                'f0' || cids."clientId" as "client!",
+                'f0' || other_dc."clientId" as "other_client!",
+                SUM(other_dc."pieceSize")::bigint AS "total_deal_size!",
+                COUNT(DISTINCT other_dc."pieceCid")::INT AS "unique_cid_count!" 
+            FROM 
+                cids
+            JOIN dc_allocation_claim other_dc
+                ON
+                    cids."pieceCid" = other_dc."pieceCid"
+                    and cids."clientId" != other_dc."clientId"
+            GROUP BY 1, 2
+            "#
         )
     }
 }
