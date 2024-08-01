@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                    insert into aggregated_client_deals (client, term_start_from, term_start_to, total_deal_size)\n                    values ($1, $2, $3, $4)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Int4",
+        "Int4",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "42bce962610cf78b66f5ed82448e7768d6e6e15171e357ae9efcd68c8fb4a4d7"
+}

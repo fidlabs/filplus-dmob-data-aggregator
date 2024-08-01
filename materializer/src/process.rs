@@ -2,13 +2,14 @@ use crate::Result;
 use dest_db::{DestDatabase, Writable};
 use source_db::{Fetchable, SourceDatabase};
 use tracing::info;
-use types::{CidSharing, ProviderDistribution, ReplicaDistribution};
+use types::{AggregatedClientDeals, CidSharing, ProviderDistribution, ReplicaDistribution};
 
 #[tracing::instrument(skip(source_db, dest_db))]
 pub async fn process(source_db: SourceDatabase, dest_db: DestDatabase) -> Result<()> {
     process_view::<ProviderDistribution>(&source_db, &dest_db).await?;
     process_view::<ReplicaDistribution>(&source_db, &dest_db).await?;
     process_view::<CidSharing>(&source_db, &dest_db).await?;
+    process_view::<AggregatedClientDeals>(&source_db, &dest_db).await?;
     Ok(())
 }
 

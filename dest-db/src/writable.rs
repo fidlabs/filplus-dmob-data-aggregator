@@ -1,5 +1,5 @@
 use sqlx::{postgres::PgArguments, query::Query, Postgres};
-use types::{CidSharing, ProviderDistribution, ReplicaDistribution};
+use types::{AggregatedClientDeals, CidSharing, ProviderDistribution, ReplicaDistribution};
 
 pub trait Writable: Send + Sized + Unpin {
     fn insert(&self) -> Query<'static, Postgres, PgArguments>;
@@ -60,5 +60,24 @@ impl Writable for CidSharing {
 
     fn truncate() -> Query<'static, Postgres, PgArguments> {
         sqlx::query!("truncate cid_sharing")
+    }
+}
+
+impl Writable for AggregatedClientDeals {
+    fn insert(&self) -> Query<'static, Postgres, PgArguments> {
+        sqlx::query!(
+                "
+                    insert into aggregated_client_deals (client, term_start_from, term_start_to, total_deal_size)
+                    values ($1, $2, $3, $4)
+                ",
+                self.client,
+                self.term_start_from,
+                self.term_start_to,
+                self.total_deal_size
+        )
+    }
+
+    fn truncate() -> Query<'static, Postgres, PgArguments> {
+        sqlx::query!("truncate aggregated_client_deals")
     }
 }

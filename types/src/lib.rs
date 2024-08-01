@@ -18,3 +18,10 @@ pub struct CidSharing {
     pub unique_cid_count: i32,
     pub total_deal_size: i64,
 }
+
+pub struct AggregatedClientDeals {
+    pub client: String,
+    pub term_start_from: i32,
+    pub term_start_to: i32,
+    pub total_deal_size: i64,
+}

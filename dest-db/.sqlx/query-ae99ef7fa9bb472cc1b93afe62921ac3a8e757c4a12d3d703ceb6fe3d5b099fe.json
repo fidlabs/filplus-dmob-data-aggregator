@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "truncate aggregated_client_deals",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "ae99ef7fa9bb472cc1b93afe62921ac3a8e757c4a12d3d703ceb6fe3d5b099fe"
+}
