@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "truncate provider_distribution",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "d149a22062245252adcdaf612ddf158976460db05ba8156db5570cf8d4e3e140"
+}

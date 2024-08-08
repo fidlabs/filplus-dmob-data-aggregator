@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "truncate cid_sharing",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "86015f326c2fcc9d10cd54cdab9285fdd8c38dd2123ca17ec4f37094ce203ad3"
+}

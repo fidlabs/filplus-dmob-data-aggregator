@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            with aggregates as (\n                select\n                    'f0' || \"clientId\" as client,\n                    \"termStart\" * 30 / 3600 as term_start,\n                    sum(\"pieceSize\") as total_deal_size\n                from dc_allocation_claim\n                where\n                    \"termStart\" > 0\n                    and removed = false\n                group by 1, 2\n            )\n            select\n                client as \"client!\",\n                term_start * 3600 / 30 as \"term_start_from!\",\n                (term_start+1) * 3600 / 30 - 1 as \"term_start_to!\",\n                total_deal_size::bigint as \"total_deal_size!\"\n            from aggregates\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "client!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "term_start_from!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "term_start_to!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "total_deal_size!",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "6e9481f43e11a293042ceca71fdd2f246cb7427bb2b29ed9c0c5beef35662b5a"
+}

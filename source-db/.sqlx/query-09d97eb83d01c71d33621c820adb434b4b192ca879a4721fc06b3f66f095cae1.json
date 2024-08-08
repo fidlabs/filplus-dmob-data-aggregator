@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            WITH replicas AS (\n                SELECT\n                    'f0' || \"clientId\" as \"clientId\",\n                    \"pieceCid\" AS piece_cid,\n                    COUNT(DISTINCT \"providerId\") AS num_of_replicas,\n                    SUM(\"pieceSize\") AS total_deal_size,\n                    MAX(\"pieceSize\") AS piece_size\n                FROM dc_allocation_claim\n                WHERE\n                    removed = false\n                    AND \"termStart\" > 0\n                GROUP BY\n                    \"clientId\",\n                    piece_cid\n            )\n            SELECT\n                \"clientId\" as \"client!\",\n                num_of_replicas::INT as \"num_of_replicas!\",\n                SUM(total_deal_size)::bigint AS \"total_deal_size!\",\n                SUM(piece_size)::bigint AS \"unique_data_size!\"\n            FROM replicas\n            GROUP BY\n                \"clientId\",\n                num_of_replicas\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "client!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "num_of_replicas!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "total_deal_size!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "unique_data_size!",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "09d97eb83d01c71d33621c820adb434b4b192ca879a4721fc06b3f66f095cae1"
+}

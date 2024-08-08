@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "truncate replica_distribution",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "c164910bddc7cb2b327cde340cedc131e9f5e827a996abc89cc03daf584df09d"
+}

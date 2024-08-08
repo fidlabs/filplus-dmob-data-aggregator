@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n             WITH miner_pieces AS (\n                SELECT\n                    'f0' || \"clientId\"  AS client,\n                    'f0' || \"providerId\"  AS provider,\n                    \"pieceCid\",\n                    SUM(\"pieceSize\") AS total_deal_size,\n                    MIN(\"pieceSize\") AS piece_size\n                FROM  dc_allocation_claim\n                WHERE \n                    removed = false AND\n                    \"termStart\" > 0\n                GROUP BY\n                    client,\n                    provider,\n                    \"pieceCid\"\n            ),\n            miners AS (\n                SELECT\n                    client,\n                    provider,\n                    SUM(total_deal_size) AS total_deal_size,\n                    SUM(piece_size)      AS unique_data_size\n                FROM   miner_pieces\n                GROUP  BY client, provider\n            )\n            SELECT\n                client as \"client!\",\n                provider as \"provider!\",\n                total_deal_size::bigint as \"total_deal_size!\",\n                unique_data_size::bigint as \"unique_data_size!\"\n            FROM   miners\n            ORDER  BY total_deal_size DESC\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "client!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "provider!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "total_deal_size!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "unique_data_size!",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "1c42e1dadda2241492dcae3b52904df76ab456e2e08070d22cbdf60688326d52"
+}
