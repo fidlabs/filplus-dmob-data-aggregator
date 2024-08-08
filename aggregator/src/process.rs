@@ -1,8 +1,7 @@
 use crate::Result;
 use dest_db::{DestDatabase, Writable};
-use futures_util::future::TryFutureExt;
 use source_db::{Fetchable, SourceDatabase};
-use tracing::{info, warn};
+use tracing::info;
 use types::{
     AggregatedClientDeals, CidSharing, ProviderDistribution, Providers, ReplicaDistribution,
 };
