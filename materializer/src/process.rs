@@ -23,21 +23,7 @@ pub async fn process_view<T: Fetchable + Writable>(
     dest_db: &DestDatabase,
 ) -> Result<()> {
     info!("Fetching");
-
-    // the retry logic code below is bad, but it's temporary - as soon as DMOB
-    // team increases max_standby_*_delay on postgres we can get rid of retries
-    // completely
-    let fetch = || source_db.fetch::<T>();
-    let refetch = |e| {
-        warn!(%e, "Error while fetching, retrying...");
-        fetch()
-    };
-    let data = fetch()
-        .or_else(refetch)
-        .or_else(refetch)
-        .or_else(refetch)
-        .or_else(refetch)
-        .await?;
+    let data = source_db.fetch::<T>().await?;
 
     info!("Writing {} rows", data.len());
     dest_db

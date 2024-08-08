@@ -159,7 +159,7 @@ impl Fetchable for AggregatedClientDeals {
 }
 
 impl Fetchable for Providers {
-    const NAME: &'static str = "providers";
+    const NAME: &'static str = "Providers";
 
     fn query(
     ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
