@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "truncate provider_retrievability",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "331c4ba49acaa0f55e1553ab27914f1d58c3235c4b861c5aad66366bbc12001d"
+}
