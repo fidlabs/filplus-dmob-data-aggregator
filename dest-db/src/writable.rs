@@ -1,7 +1,7 @@
 use sqlx::{postgres::PgArguments, query::Query, Postgres};
 use types::{
-    AggregatedClientDeals, CidSharing, ProviderDistribution, ProviderRetrievability, Providers,
-    ReplicaDistribution,
+    AggregatedClientDeals, AllocatorDistribution, CidSharing, ProviderDistribution,
+    ProviderRetrievability, Providers, ReplicaDistribution,
 };
 
 pub trait Writable: Send + Sized + Unpin {
@@ -118,5 +118,24 @@ impl Writable for ProviderRetrievability {
 
     fn truncate() -> Query<'static, Postgres, PgArguments> {
         sqlx::query!("truncate provider_retrievability")
+    }
+}
+
+impl Writable for AllocatorDistribution {
+    fn insert(&self) -> Query<'static, Postgres, PgArguments> {
+        sqlx::query!(
+            "
+                    insert into allocator_distribution (allocator, client, num_of_allocations, sum_of_allocations)
+                    values ($1, $2, $3, $4)
+                ",
+            self.allocator,
+            self.client,
+            self.num_of_allocations,
+            self.sum_of_allocations
+        )
+    }
+
+    fn truncate() -> Query<'static, Postgres, PgArguments> {
+        sqlx::query!("truncate allocator_distribution")
     }
 }

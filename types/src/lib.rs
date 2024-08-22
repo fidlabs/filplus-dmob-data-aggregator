@@ -44,3 +44,10 @@ pub struct ProviderRetrievability {
     pub successful: i64,
     pub success_rate: f64,
 }
+
+pub struct AllocatorDistribution {
+    pub allocator: String,
+    pub client: String,
+    pub num_of_allocations: i64,
+    pub sum_of_allocations: i64,
+}

@@ -4,7 +4,8 @@ use sqlx::{
     query_as, Error, Postgres,
 };
 use types::{
-    AggregatedClientDeals, CidSharing, ProviderDistribution, Providers, ReplicaDistribution,
+    AggregatedClientDeals, AllocatorDistribution, CidSharing, ProviderDistribution, Providers,
+    ReplicaDistribution,
 };
 
 pub trait Fetchable: Send + Sized + Unpin {
@@ -177,6 +178,27 @@ impl Fetchable for Providers {
             order by
                 "providerId",
                 "termStart" asc
+            "#
+        )
+    }
+}
+
+impl Fetchable for AllocatorDistribution {
+    const NAME: &'static str = "AllocatorDistribution";
+
+    fn query(
+    ) -> Map<'static, Postgres, impl Send + FnMut(PgRow) -> Result<Self, Error>, PgArguments> {
+        query_as!(
+            Self,
+            r#"
+            select
+                "verifierAddressId" as "allocator!",
+                "addressId" as "client!",
+                count(*) as "num_of_allocations!",
+                sum(allowance)::bigint as "sum_of_allocations!"
+            from verified_client_allowance
+            where "addressId" != ''
+            group by 1, 2;
             "#
         )
     }

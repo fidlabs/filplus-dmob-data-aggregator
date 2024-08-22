@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "truncate allocator_distribution",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "07983795f2d6bff1332621aeb5b8167237b7db78dc0e6c6d7c2d9e9af72706a4"
+}

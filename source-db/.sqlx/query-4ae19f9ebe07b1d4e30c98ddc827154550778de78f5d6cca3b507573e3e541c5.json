@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            select\n                \"verifierAddressId\" as \"allocator!\",\n                \"addressId\" as \"client!\",\n                count(*) as \"num_of_allocations!\",\n                sum(allowance)::bigint as \"sum_of_allocations!\"\n            from verified_client_allowance\n            where \"addressId\" != ''\n            group by 1, 2;\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "allocator!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "client!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "num_of_allocations!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "sum_of_allocations!",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      true,
+      true,
+      null,
+      null
+    ]
+  },
+  "hash": "4ae19f9ebe07b1d4e30c98ddc827154550778de78f5d6cca3b507573e3e541c5"
+}

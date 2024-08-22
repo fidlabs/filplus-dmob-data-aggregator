@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                    insert into allocator_distribution (allocator, client, num_of_allocations, sum_of_allocations)\n                    values ($1, $2, $3, $4)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "7d7023890d1bd70b74e8d259cb76d01c29c0f8a27a9a67b23d41dd5dc44aaef7"
+}
