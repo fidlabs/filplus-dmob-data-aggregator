@@ -1,9 +1,10 @@
-use crate::Result;
+use crate::{spark, Result};
 use dest_db::{DestDatabase, Writable};
 use source_db::{Fetchable, SourceDatabase};
 use tracing::info;
 use types::{
-    AggregatedClientDeals, CidSharing, ProviderDistribution, Providers, ReplicaDistribution,
+    AggregatedClientDeals, CidSharing, ProviderDistribution, ProviderRetrievability, Providers,
+    ReplicaDistribution,
 };
 
 #[tracing::instrument(skip(source_db, dest_db))]
@@ -13,6 +14,7 @@ pub async fn process(source_db: SourceDatabase, dest_db: DestDatabase) -> Result
     process_view::<ReplicaDistribution>(&source_db, &dest_db).await?;
     process_view::<CidSharing>(&source_db, &dest_db).await?;
     process_view::<AggregatedClientDeals>(&source_db, &dest_db).await?;
+    process_retrievability(&dest_db).await?;
     Ok(())
 }
 
@@ -31,6 +33,26 @@ pub async fn process_view<T: Fetchable + Writable>(
         .truncate::<T>()
         .await?
         .insert::<T>(data)
+        .await?
+        .commit()
+        .await?;
+
+    info!("Done");
+    Ok(())
+}
+
+#[tracing::instrument(skip_all)]
+pub async fn process_retrievability(dest_db: &DestDatabase) -> Result<()> {
+    info!("Fetching");
+    let data = spark::fetch_retrievability_data().await?;
+
+    info!("Writing {} rows", data.len());
+    dest_db
+        .begin()
+        .await?
+        .truncate::<ProviderRetrievability>()
+        .await?
+        .insert::<ProviderRetrievability>(data)
         .await?
         .commit()
         .await?;

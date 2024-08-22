@@ -1,3 +1,6 @@
+use serde::Deserialize;
+use serde_aux::field_attributes::deserialize_number_from_string;
+
 pub struct ProviderDistribution {
     pub client: String,
     pub provider: String,
@@ -29,4 +32,15 @@ pub struct AggregatedClientDeals {
 pub struct Providers {
     pub provider: String,
     pub first_client: String,
+}
+
+#[derive(Deserialize)]
+pub struct ProviderRetrievability {
+    #[serde(rename = "miner_id")]
+    pub provider: String,
+    #[serde(deserialize_with = "deserialize_number_from_string")]
+    pub total: i64,
+    #[serde(deserialize_with = "deserialize_number_from_string")]
+    pub successful: i64,
+    pub success_rate: f64,
 }

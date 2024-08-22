@@ -3,6 +3,7 @@ use color_eyre::eyre::WrapErr;
 use tracing_subscriber::{filter::EnvFilter, FmtSubscriber};
 
 mod process;
+mod spark;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {

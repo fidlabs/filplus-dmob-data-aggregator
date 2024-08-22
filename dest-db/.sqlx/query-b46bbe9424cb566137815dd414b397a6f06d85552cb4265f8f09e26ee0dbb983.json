@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                    insert into provider_retrievability (provider, total, successful, success_rate)\n                    values ($1, $2, $3, $4)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Int8",
+        "Int8",
+        "Float8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "b46bbe9424cb566137815dd414b397a6f06d85552cb4265f8f09e26ee0dbb983"
+}
