@@ -30,10 +30,8 @@ impl Fetchable for ProviderDistribution {
                     "pieceCid",
                     SUM("pieceSize") AS total_deal_size,
                     MIN("pieceSize") AS piece_size
-                FROM  dc_allocation_claim
-                WHERE 
-                    removed = false AND
-                    "termStart" > 0
+                FROM  unified_verified_deal
+                WHERE "termStart" > 0
                 GROUP BY
                     client,
                     provider,
@@ -75,10 +73,8 @@ impl Fetchable for ReplicaDistribution {
                     COUNT(DISTINCT "providerId") AS num_of_replicas,
                     SUM("pieceSize") AS total_deal_size,
                     MAX("pieceSize") AS piece_size
-                FROM dc_allocation_claim
-                WHERE
-                    removed = false
-                    AND "termStart" > 0
+                FROM unified_verified_deal
+                WHERE "termStart" > 0
                 GROUP BY
                     "clientId",
                     piece_cid
@@ -109,8 +105,7 @@ impl Fetchable for CidSharing {
                     select distinct
                         "clientId",
                         "pieceCid"
-                    from dc_allocation_claim
-                    where removed = false
+                    from unified_verified_deal
             )
             SELECT 
                 'f0' || cids."clientId" as "client!",
@@ -119,7 +114,7 @@ impl Fetchable for CidSharing {
                 COUNT(DISTINCT other_dc."pieceCid")::INT AS "unique_cid_count!" 
             FROM 
                 cids
-            JOIN dc_allocation_claim other_dc
+            JOIN unified_verified_deal other_dc
                 ON
                     cids."pieceCid" = other_dc."pieceCid"
                     and cids."clientId" != other_dc."clientId"
@@ -142,10 +137,9 @@ impl Fetchable for AggregatedClientDeals {
                     'f0' || "clientId" as client,
                     "termStart" * 30 / 3600 as term_start,
                     sum("pieceSize") as total_deal_size
-                from dc_allocation_claim
+                from unified_verified_deal
                 where
                     "termStart" > 0
-                    and removed = false
                 group by 1, 2
             )
             select
@@ -171,10 +165,9 @@ impl Fetchable for Providers {
                 distinct on ("providerId")
                 'f0' || "providerId" as "provider!",
                 'f0' || "clientId" as "first_client!"
-            from dc_allocation_claim
+            from unified_verified_deal
             where
                 "termStart" > 0
-                and removed = false
             order by
                 "providerId",
                 "termStart" asc

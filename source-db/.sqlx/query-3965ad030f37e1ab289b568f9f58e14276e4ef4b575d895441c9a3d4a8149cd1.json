@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            with cids as (\n                    select distinct\n                        \"clientId\",\n                        \"pieceCid\"\n                    from unified_verified_deal\n            )\n            SELECT \n                'f0' || cids.\"clientId\" as \"client!\",\n                'f0' || other_dc.\"clientId\" as \"other_client!\",\n                SUM(other_dc.\"pieceSize\")::bigint AS \"total_deal_size!\",\n                COUNT(DISTINCT other_dc.\"pieceCid\")::INT AS \"unique_cid_count!\" \n            FROM \n                cids\n            JOIN unified_verified_deal other_dc\n                ON\n                    cids.\"pieceCid\" = other_dc.\"pieceCid\"\n                    and cids.\"clientId\" != other_dc.\"clientId\"\n            GROUP BY 1, 2\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "client!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "other_client!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "total_deal_size!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "unique_cid_count!",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "3965ad030f37e1ab289b568f9f58e14276e4ef4b575d895441c9a3d4a8149cd1"
+}
