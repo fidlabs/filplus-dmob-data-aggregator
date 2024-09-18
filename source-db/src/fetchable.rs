@@ -31,7 +31,7 @@ impl Fetchable for ProviderDistribution {
                     SUM("pieceSize") AS total_deal_size,
                     MIN("pieceSize") AS piece_size
                 FROM  unified_verified_deal
-                WHERE "termStart" > 0
+                WHERE "termStart" > 0 and "sectorId" != '0'
                 GROUP BY
                     client,
                     provider,
@@ -74,7 +74,7 @@ impl Fetchable for ReplicaDistribution {
                     SUM("pieceSize") AS total_deal_size,
                     MAX("pieceSize") AS piece_size
                 FROM unified_verified_deal
-                WHERE "termStart" > 0
+                WHERE "termStart" > 0 and "sectorId" != '0'
                 GROUP BY
                     "clientId",
                     piece_cid
@@ -138,8 +138,7 @@ impl Fetchable for AggregatedClientDeals {
                     "termStart" * 30 / 3600 as term_start,
                     sum("pieceSize") as total_deal_size
                 from unified_verified_deal
-                where
-                    "termStart" > 0
+                where "termStart" > 0 and "sectorId" != '0'
                 group by 1, 2
             )
             select
@@ -166,8 +165,7 @@ impl Fetchable for Providers {
                 'f0' || "providerId" as "provider!",
                 'f0' || "clientId" as "first_client!"
             from unified_verified_deal
-            where
-                "termStart" > 0
+            where "termStart" > 0 and "sectorId" != '0'
             order by
                 "providerId",
                 "termStart" asc

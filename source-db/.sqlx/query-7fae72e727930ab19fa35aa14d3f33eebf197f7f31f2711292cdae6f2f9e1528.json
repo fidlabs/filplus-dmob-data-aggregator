@@ -1,0 +1,26 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            select\n                distinct on (\"providerId\")\n                'f0' || \"providerId\" as \"provider!\",\n                'f0' || \"clientId\" as \"first_client!\"\n            from unified_verified_deal\n            where \"termStart\" > 0 and \"sectorId\" != '0'\n            order by\n                \"providerId\",\n                \"termStart\" asc\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "provider!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "first_client!",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null
+    ]
+  },
+  "hash": "7fae72e727930ab19fa35aa14d3f33eebf197f7f31f2711292cdae6f2f9e1528"
+}
