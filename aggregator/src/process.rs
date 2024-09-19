@@ -1,7 +1,7 @@
 use crate::{spark, Result};
 use dest_db::{DestDatabase, Writable};
 use source_db::{Fetchable, SourceDatabase};
-use tracing::info;
+use tracing::{info, warn};
 use types::{
     AggregatedClientDeals, AllocatorDistribution, CidSharing, ProviderDistribution,
     ProviderRetrievability, Providers, ReplicaDistribution,
@@ -25,7 +25,13 @@ pub async fn process_view<T: Fetchable + Writable>(
     dest_db: &DestDatabase,
 ) -> Result<()> {
     info!("Fetching");
-    let data = source_db.fetch::<T>().await?;
+    let data = source_db.fetch::<T>().await;
+    let data = if data.is_err() {
+        warn!("Fetch failed, retrying...");
+        source_db.fetch::<T>().await?
+    } else {
+        data?
+    };
 
     info!("Writing {} rows", data.len());
     dest_db
